@@ -1,0 +1,50 @@
+# JALK - Just Another Linux Kernel
+# Top-level build wrapper
+
+KERNEL_DIR := jalk-7.0.10
+MAKE_ARGS := -C $(KERNEL_DIR)
+
+.PHONY: all defconfig menuconfig nconfig clean mrproper distclean help
+
+all:
+	@echo "Building JALK - Just Another Linux Kernel"
+	@echo "Usage: make <target>"
+	@echo ""
+	@echo "Common targets:"
+	@echo "  defconfig   - Configure kernel with default config"
+	@echo "  menuconfig  - Configure kernel with menu-based interface"
+	@echo "  all         - Build the kernel"
+	@echo "  modules     - Build kernel modules"
+	@echo "  modules_install - Install kernel modules"
+	@echo "  install     - Install the kernel"
+	@echo ""
+	@echo "Architecture-specific:"
+	@echo "  make ARCH=x86_64 defconfig"
+	@echo "  make ARCH=arm64 defconfig"
+	@echo "  make ARCH=riscv defconfig"
+	@echo "  make ARCH=i386 defconfig"
+	@echo ""
+
+defconfig:
+	$(MAKE) $(MAKE_ARGS) defconfig
+
+menuconfig:
+	$(MAKE) $(MAKE_ARGS) menuconfig
+
+nconfig:
+	$(MAKE) $(MAKE_ARGS) nconfig
+
+clean:
+	$(MAKE) $(MAKE_ARGS) clean
+
+mrproper:
+	$(MAKE) $(MAKE_ARGS) mrproper
+
+distclean:
+	$(MAKE) $(MAKE_ARGS) distclean
+
+help:
+	$(MAKE) $(MAKE_ARGS) help
+
+%:
+	$(MAKE) $(MAKE_ARGS) $@
