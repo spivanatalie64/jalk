@@ -1,0 +1,19 @@
+JALK - JUST ANOTHER LINUX KERNEL
+M:	Natalie <spivanatalie64@users.noreply.github.com>
+L:	https://github.com/spivanatalie64/jalk
+S:	Supported
+F:	init/Kconfig (CONFIG_JALK section)
+F:	kernel/jalk.c
+F:	kernel/jalk.h
+F:	include/linux/uts.h
+F:	init/version-timestamp.c
+F:	localversion-jalk
+F:	arch/x86/configs/jalk_defconfig
+F:	scripts/jalk*.sh
+F:	scripts/jalk-kconfig.cfg
+F:	docs/
+F:	tests/
+F:	patches/
+F:	CONTRIBUTING.md
+F:	SECURITY.md
+F:	MAINTAINERS.jalk
