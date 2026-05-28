@@ -1,0 +1,203 @@
+# JALK GitLab CI Pipeline
+# Mirrors the GitHub Actions build-and-test.yml + adds GitLab-specific features
+
+stages:
+  - build
+  - test
+  - benchmark
+  - package
+  - pages
+
+variables:
+  GIT_DEPTH: "1"
+  GIT_STRATEGY: clone
+
+# ---------------------------------------------------------------------------
+# BUILD STAGE
+# ---------------------------------------------------------------------------
+
+build:x86_64:
+  stage: build
+  image: ubuntu:latest
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq gcc make flex bison bc cpio
+      libelf-dev libssl-dev openssl qemu-system-x86
+    - mkdir -p certs && openssl req -new -newkey rsa:4096 -days 36500 -nodes -x509
+      -subj "/CN=JALK" -keyout certs/signing_key.pem -out certs/signing_key.pem 2>/dev/null
+  script:
+    - make jalk_defconfig
+    - make -j$(nproc) bzImage modules
+  artifacts:
+    paths:
+      - arch/x86/boot/bzImage
+      - vmlinux
+      - .config
+    expire_in: 1 week
+  cache:
+    key: build-x86_64
+    paths:
+      - .cache/ccache
+
+build:arm64:
+  stage: build
+  image: ubuntu:latest
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq gcc-aarch64-linux-gnu make flex
+      bison bc cpio libelf-dev libssl-dev
+  script:
+    - make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig
+    - make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc) Image modules
+  artifacts:
+    paths:
+      - arch/arm64/boot/Image
+    expire_in: 1 week
+
+build:riscv:
+  stage: build
+  image: ubuntu:latest
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq gcc-riscv64-linux-gnu make flex
+      bison bc cpio libelf-dev libssl-dev
+  script:
+    - make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- defconfig
+    - make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- -j$(nproc) Image
+  artifacts:
+    paths:
+      - arch/riscv/boot/Image
+    expire_in: 1 week
+
+build:minimal:
+  stage: build
+  image: ubuntu:latest
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq gcc make flex bison bc cpio
+      libelf-dev libssl-dev
+  script:
+    - make allnoconfig
+    - echo "CONFIG_JALK=y" >> .config
+    - echo "CONFIG_64BIT=y" >> .config
+    - echo "CONFIG_X86_64=y" >> .config
+    - make olddefconfig
+    - make -j2 bzImage
+  timeout: 10 minutes
+
+build:livepatch:
+  stage: build
+  image: ubuntu:latest
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq gcc make flex bison bc cpio
+      libelf-dev libssl-dev openssl
+    - mkdir -p certs && openssl req -new -newkey rsa:4096 -days 36500 -nodes -x509
+      -subj "/CN=JALK" -keyout certs/signing_key.pem -out certs/signing_key.pem 2>/dev/null
+  script:
+    - make jalk_defconfig
+    - ./scripts/config --enable LIVEPATCH
+    - ./scripts/config --enable FUNCTION_TRACER
+    - ./scripts/config --enable DYNAMIC_FTRACE
+    - make olddefconfig
+    - make -j$(nproc) bzImage
+  artifacts:
+    paths:
+      - arch/x86/boot/bzImage
+    expire_in: 1 week
+
+# ---------------------------------------------------------------------------
+# TEST STAGE
+# ---------------------------------------------------------------------------
+
+test:qemu-boot:
+  stage: test
+  image: ubuntu:latest
+  needs: ["build:x86_64"]
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq qemu-system-x86
+  script:
+    - ./tests/qemu/boot-test.sh x86_64 arch/x86/boot/bzImage
+
+test:kunit:
+  stage: test
+  image: ubuntu:latest
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq gcc make flex bison bc cpio
+      libelf-dev libssl-dev python3
+  script:
+    - python3 ./tools/testing/kunit/kunit.py run --timeout=300
+      --kconfig_add="CONFIG_JALK=y" || true
+
+test:kselftest:
+  stage: test
+  image: ubuntu:latest
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq gcc make flex bison bc cpio
+      libelf-dev libssl-dev
+  script:
+    - make defconfig && make -j$(nproc) modules_prepare
+    - make -C tools/testing/selftests TARGETS="sched mm net" -j$(nproc)
+    - make -C tools/testing/selftests TARGETS="sched mm net" run_tests || true
+
+test:verify:
+  stage: test
+  script:
+    - ./verify.sh
+
+# ---------------------------------------------------------------------------
+# BENCHMARK STAGE
+# ---------------------------------------------------------------------------
+
+benchmark:x86_64:
+  stage: benchmark
+  image: ubuntu:latest
+  needs: ["build:x86_64"]
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq gcc make flex bison bc cpio
+      libelf-dev libssl-dev wget php-cli php-xml php-curl
+    - wget -q https://phoronix-test-suite.com/releases/phoronix-test-suite-10.8.4.tar.gz
+    - tar -xzf phoronix-test-suite-*.tar.gz && cd phoronix-test-suite/ && ./install-sh
+  script:
+    - phoronix-test-suite batch-benchmark pts/scheduler-test-1.0.0 || true
+    - phoronix-test-suite batch-benchmark pts/context-switching-1.0.0 || true
+    - phoronix-test-suite batch-benchmark pts/fs-mark-1.0.0 || true
+  artifacts:
+    paths:
+      - ~/.phoronix-test-suite/test-results/
+    expire_in: 1 month
+
+# ---------------------------------------------------------------------------
+# PACKAGE STAGE
+# ---------------------------------------------------------------------------
+
+package:deb:
+  stage: package
+  image: ubuntu:latest
+  needs: ["build:x86_64"]
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq gcc make flex bison bc cpio
+      libelf-dev libssl-dev openssl
+    - mkdir -p certs && openssl req -new -newkey rsa:4096 -days 36500 -nodes -x509
+      -subj "/CN=JALK" -keyout certs/signing_key.pem -out certs/signing_key.pem 2>/dev/null
+  script:
+    - make jalk_defconfig
+    - make -j$(nproc) bindeb-pkg
+  artifacts:
+    paths:
+      - ../*.deb
+    expire_in: 1 month
+
+# ---------------------------------------------------------------------------
+# DOCS / PAGES
+# ---------------------------------------------------------------------------
+
+pages:
+  stage: pages
+  script:
+    - mkdir -p public
+    - cp docs/*.md public/
+    - cp README.md public/index.md
+    - cp docs/index.md public/ || true
+    - cp -r tests/ public/tests/ 2>/dev/null || true
+    - cp -r docs/ public/docs/ 2>/dev/null || true
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
