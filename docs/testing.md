@@ -59,13 +59,13 @@ Boot-test the kernel on simulated hardware for multiple architectures.
 
 ```bash
 # Stress CPU, memory, and IO
-./tests/stress/run-stress.sh --duration 3600
+./tests/stress/stress-test.sh --duration 3600
 
 # Memory pressure test
-./tests/stress/mem-pressure.sh
+./tests/stress/stress-test.sh --memory
 
 # Filesystem stress
-./tests/stress/fs-stress.sh
+./tests/stress/stress-test.sh --io
 ```
 
 ## CI Pipeline

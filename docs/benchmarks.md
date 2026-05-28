@@ -26,7 +26,7 @@ JALK uses the following benchmark tools for performance regression testing:
 ./tools/perf/perf bench mem all
 
 # Full benchmark suite
-./tests/benchmarks/run-all.sh
+./tests/benchmarks/phoronix-suite.sh
 ```
 
 ## Baseline Comparison

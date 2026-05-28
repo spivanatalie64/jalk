@@ -26,3 +26,7 @@ The following are in scope:
 The following are out of scope:
 - Upstream Linux kernel vulnerabilities (report to security@kernel.org)
 - User applications running on JALK
+
+## GPG Key
+
+Fingerprint: 2DD9 6596 310B 520B B945 8357 97A3 9EB4 7A2F C589

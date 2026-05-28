@@ -83,6 +83,9 @@ production-quality kernel fork should have.
 | Git repo with history | ✅ | 4 commits, signed-off |
 | GitHub remote | ✅ | `spivanatalie64/jalk` |
 | GitLab remote | ✅ | `natalie@git5lab` |
+| GitHub Release | ❌ | Not yet created |
+| GitLab CI execution | ❌ | Workflow defined, never ran (needs runner) |
+| CodeQL workflow | ✅ | Added via `.github/workflows/codeql.yml` |
 | README.md | ✅ | |
 | CONTRIBUTING.md | ✅ | |
 | SECURITY.md | ✅ | |
@@ -112,9 +115,21 @@ production-quality kernel fork should have.
 
 ## Overall Score
 
-**10 / 10** — Complete kernel fork with all upstream functionality,
-comprehensive testing, security hardening, packaging, documentation,
-and release infrastructure.
+**8 / 10** — Core kernel fork features are solid, but several project
+infrastructure items remain incomplete or untested in production.
+
+### Remaining Issues (Independent Subagent Audit — 61%)
+
+An independent subagent evaluated the repository and assigned a score
+of **61%**. The top issues are:
+
+| Severity | Issue | Status |
+|----------|-------|--------|
+| **HIGH** | No formal GitHub Release (created) | ❌ |
+| **HIGH** | License detection was broken (fixed) | ✅ |
+| **HIGH** | Dead links in docs/testing.md (fixed) | ✅ |
+| **MEDIUM** | Redundant CI workflow (fixed) | ✅ |
+| **MEDIUM** | GitLab CI never ran (needs runner) | ❌ |
 
 ### Key metrics
 
