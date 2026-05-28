@@ -76,10 +76,10 @@ unsigned int sysctl_sched_tunable_scaling = SCHED_TUNABLESCALING_LOG;
  *
  * (default: 0.70 msec * (1 + ilog(ncpus)), units: nanoseconds)
  */
-unsigned int sysctl_sched_base_slice			= 700000ULL;
-static unsigned int normalized_sysctl_sched_base_slice	= 700000ULL;
+unsigned int sysctl_sched_base_slice			= 500000ULL;
+static unsigned int normalized_sysctl_sched_base_slice	= 500000ULL;
 
-__read_mostly unsigned int sysctl_sched_migration_cost	= 500000UL;
+__read_mostly unsigned int sysctl_sched_migration_cost	= 250000UL;
 
 static int __init setup_sched_thermal_decay_shift(char *str)
 {

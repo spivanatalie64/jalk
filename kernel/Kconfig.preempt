@@ -17,7 +17,7 @@ config ARCH_HAS_PREEMPT_LAZY
 choice
 	prompt "Preemption Model"
 	default PREEMPT_LAZY if ARCH_HAS_PREEMPT_LAZY
-	default PREEMPT_NONE
+	default PREEMPT
 
 config PREEMPT_NONE
 	bool "No Forced Preemption (Server)"

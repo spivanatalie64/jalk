@@ -715,6 +715,7 @@ choice
 
 	config DEFAULT_BBR
 		bool "BBR" if TCP_CONG_BBR=y
+		default y if TCP_CONG_BBR=y
 
 	config DEFAULT_RENO
 		bool "Reno"

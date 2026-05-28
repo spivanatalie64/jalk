@@ -6,7 +6,11 @@
  * Defines for what uname() should return 
  */
 #ifndef UTS_SYSNAME
+#ifdef CONFIG_JALK
+#define UTS_SYSNAME "JALK"
+#else
 #define UTS_SYSNAME "Linux"
+#endif
 #endif
 
 #ifndef UTS_NODENAME

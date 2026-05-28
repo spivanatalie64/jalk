@@ -1,4 +1,14 @@
 # SPDX-License-Identifier: GPL-2.0-only
+config JALK
+	bool "JALK - Just Another Linux Kernel"
+	default y
+	help
+	  Enable JALK-specific kernel features and optimizations.
+	  JALK is a performance-optimized fork of the Linux kernel.
+
+	  Selecting this enables JALK branding, scheduler tuning,
+	  and performance-focused default configurations.
+
 config CC_VERSION_TEXT
 	string
 	default "$(CC_VERSION_TEXT)"
