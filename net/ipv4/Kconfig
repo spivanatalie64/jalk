@@ -681,7 +681,7 @@ config TCP_CONG_BBR
 
 choice
 	prompt "Default TCP congestion control"
-	default DEFAULT_CUBIC
+	default DEFAULT_BBR
 	help
 	  Select the TCP congestion control that will be used by default
 	  for all connections.
@@ -715,7 +715,6 @@ choice
 
 	config DEFAULT_BBR
 		bool "BBR" if TCP_CONG_BBR=y
-		default y if TCP_CONG_BBR=y
 
 	config DEFAULT_RENO
 		bool "Reno"

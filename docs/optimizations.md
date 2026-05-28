@@ -34,9 +34,31 @@ x86_64:
 - `CONFIG_IA32_EMULATION=y` — legacy 32-bit support
 - `CONFIG_X86_X32=y` — x32 ABI support
 
+## Safety & Security
+
+JALK enables all major Linux Security Modules (LSMs):
+
+| Feature | JALK Default | Benefit |
+|---------|-------------|---------|
+| SELinux | Enabled | Mandatory Access Control |
+| AppArmor | Enabled | Path-based MAC |
+| Landlock | Enabled | Unprivileged sandboxing |
+| Yama | Enabled | Process restriction |
+| SafeSetID | Enabled | UID/GID transition control |
+| Lockdown | Enabled | Kernel integrity protection |
+| Integrity (IMA/EVM) | Enabled | File integrity measurement |
+| Module signing | SHA512 | Signed module enforcement |
+| init_on_alloc | Enabled | Zero-initialized memory |
+| init_on_free | Enabled | Clear freed memory |
+| FORTIFY_SOURCE | Enabled | Buffer overflow detection |
+| HARDENED_USERCOPY | Enabled | Usercopy integrity |
+| LIST_HARDENED | Enabled | List corruption detection |
+| ZERO_CALL_USED_REGS | Enabled | Info leak mitigation |
+
 ## Debug Removed
 
 All of the following are disabled in jalk_defconfig:
 - DEBUG_INFO, DEBUG_KERNEL, SCHED_DEBUG
 - LOCKDEP, PROVE_LOCKING, KASAN, UBSAN
-- STACKTRACE (kept for profiling)
+- STACKTRACE (kept for profiling), DEBUG_PREEMPT
+- CGROUP_DEBUG
