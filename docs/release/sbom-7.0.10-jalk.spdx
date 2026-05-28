@@ -1,0 +1,53 @@
+SPDXVersion: SPDX-2.3
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: JALK Kernel 7.0.10-jalk
+DocumentNamespace: https://github.com/spivanatalie64/jalk/sbom/7.0.10-jalk
+LicenseListVersion: 3.21
+Creator: Tool: JALK-SBOM-Generator
+Creator: Person: Natalie (spivanatalie64)
+Created: 2026-05-28T08:23:21Z
+
+## Package: JALK Kernel
+
+PackageName: jalk-kernel
+SPDXID: SPDXRef-Package-JALK
+PackageVersion: 7.0.10-jalk
+PackageFileName: vmlinuz-7.0.10-jalk
+PackageSupplier: Person: Natalie (spivanatalie64)
+PackageOriginator: https://github.com/spivanatalie64/jalk
+PackageDownloadLocation: unknown
+PackageVerificationCode: 23ed71568a2b42e28d62b43588c396bcf7eb12f952b2a5c5d2c6f6082de9a4c0
+PackageChecksum: SHA256: 983d142cee56cce752fd13709c1ae5add8eeee3749648e2b061655be2aeff0a3
+PackageLicenseConcluded: GPL-2.0-only
+PackageLicenseDeclared: GPL-2.0-only
+PackageCopyrightText: Copyright (C) 2026 Natalie
+
+PackageSummary: JALK - Just Another Linux Kernel
+PackageDescription: Performance-optimized fork of Linux kernel 7.0.10
+
+## Relationships
+
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-Package-JALK
+Relationship: SPDXRef-Package-JALK DERIVED_FROM SPDXRef-Package-Linux-7.0.10
+
+## Upstream
+
+PackageName: Linux Kernel 7.0.10
+SPDXID: SPDXRef-Package-Linux-7.0.10
+PackageVersion: 7.0.10
+PackageDownloadLocation: https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.0.10.tar.xz
+PackageChecksum: SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  /dev/null
+PackageLicenseConcluded: GPL-2.0-only
+
+## Files
+
+FileName: arch/x86/boot/bzImage
+SPDXID: SPDXRef-File-a02ccf043b8a
+FileChecksum: SHA256: 983d142cee56cce752fd13709c1ae5add8eeee3749648e2b061655be2aeff0a3
+LicenseConcluded: GPL-2.0-only
+
+## Build Dependencies
+
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:gnu:gcc:16.1.1:*:*:*:*:*:*:
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:gnu:make:4.4:*:*:*:*:*:*:
