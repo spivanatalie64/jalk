@@ -1,0 +1,42 @@
+name: Bug Report
+description: Report a JALK kernel bug
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: JALK Version
+      description: Output of `uname -a`
+    validations:
+      required: true
+  - type: dropdown
+    id: arch
+    attributes:
+      label: Architecture
+      options: [x86_64, i386, arm64, arm, riscv, powerpc, s390, other]
+    validations:
+      required: true
+  - type: textarea
+    id: desc
+    attributes:
+      label: Description
+      description: What happened vs what was expected
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to Reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: dmesg
+    attributes:
+      label: dmesg / Kernel Logs
+      render: shell
+  - type: textarea
+    id: config
+    attributes:
+      label: Kernel Config
+      description: Attach or paste relevant config
+      render: shell

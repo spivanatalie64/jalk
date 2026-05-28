@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Linux Kernel Bug Tracker
+    url: https://bugzilla.kernel.org
+    about: For upstream-only kernel bugs
+  - name: Security Issues
+    url: https://kernel.org/security.html
+    about: Report security vulnerabilities
