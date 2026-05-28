@@ -1,0 +1,39 @@
+From cdebbf3ffa631fe7f0751f964c6f6dc717e5db2f Mon Sep 17 00:00:00 2001
+From: Natalie <spivanatalie64@users.noreply.github.com>
+Date: Thu, 28 May 2026 07:27:33 +0000
+Subject: [PATCH 4/8] JALK: Add MAINTAINERS, issue templates (bug + feature
+ request)
+
+---
+ MAINTAINERS.jalk | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+ create mode 100644 MAINTAINERS.jalk
+
+diff --git a/MAINTAINERS.jalk b/MAINTAINERS.jalk
+new file mode 100644
+index 0000000..ebc5172
+--- /dev/null
++++ b/MAINTAINERS.jalk
+@@ -0,0 +1,19 @@
++JALK - JUST ANOTHER LINUX KERNEL
++M:	Natalie <spivanatalie64@users.noreply.github.com>
++L:	https://github.com/spivanatalie64/jalk
++S:	Supported
++F:	init/Kconfig (CONFIG_JALK section)
++F:	kernel/jalk.c
++F:	kernel/jalk.h
++F:	include/linux/uts.h
++F:	init/version-timestamp.c
++F:	localversion-jalk
++F:	arch/x86/configs/jalk_defconfig
++F:	scripts/jalk*.sh
++F:	scripts/jalk-kconfig.cfg
++F:	docs/
++F:	tests/
++F:	patches/
++F:	CONTRIBUTING.md
++F:	SECURITY.md
++F:	MAINTAINERS.jalk
+-- 
+2.52.0
+

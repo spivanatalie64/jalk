@@ -1,0 +1,31 @@
+From dddfb4c23e9ba4840ea90275f104374485d34568 Mon Sep 17 00:00:00 2001
+From: Natalie <spivanatalie64@users.noreply.github.com>
+Date: Thu, 28 May 2026 07:23:55 +0000
+Subject: [PATCH 2/8] JALK: Add .gitattributes for language stats
+
+---
+ .gitattributes | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/.gitattributes b/.gitattributes
+index 2325c52..40eba99 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -1,5 +1,9 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-*.[ch] diff=cpp
+-*.dts diff=dts
+-*.dts[io] diff=dts
+-*.rs diff=rust
++*.c linguist-language=C
++*.h linguist-language=C
++*.S linguist-language=Assembly
++*.dts linguist-language=DeviceTree
++*.dtsi linguist-language=DeviceTree
++*.py linguist-language=Python
++*.rs linguist-language=Rust
++*.rst linguist-documentation
++*.patch linguist-generated
+-- 
+2.52.0
+
